@@ -1,4 +1,10 @@
-## Challenge 1: Open the safe
+## Challenge 1: Open the Entrance
+
+rotationKey = open("./rotations.txt")
+keyList = []
+for each in rotationKey:
+    keyList.append(each)
+rotationKey.close()
 
 def moveForward(currentPos):
     if currentPos == 99:
@@ -16,42 +22,25 @@ def moveBackward(currentPos):
 
 if __name__ == '__main__':
 
-    Direction = str("")
-    Distance = int(0)
-    startingPosReq = bool(True)
-    Combination = list([])
-    Open = bool(False)
+    startingPos = int(50)
+    currentPos = startingPos
+    combination = list([])
+    
+    for each in keyList:
 
-    while Open == False:
+        direction = str(each[0])
+        distance = int(each[1:])
 
-        Direction = str(input('Input Direction to turn the dial (\"L\" for Left, \"R\" for Right, \"E\" to End): '))
-        
-        if Direction.upper() not in ["L", "R", "E"]:
-            Direction = str(input('Input Direction to turn the dial (\"L\" for Left, \"R\" for Right, \"E\" to End): '))
+        while distance != 0:
+            if direction == "L":
+                currentPos = moveForward(currentPos)
+            elif direction == "R":
+                currentPos = moveBackward(currentPos)
+            print("You turn the dial to " + str(currentPos))
+            distance -= 1
 
-        if Direction in ["L", "R"]:
+        combination.append(currentPos)
 
-            Distance = int(input('Input number of clicks to turn the dial: '))
-
-            if Distance not in range(0,99):
-                Distance = int(input('Input number of clicks to turn the dial: '))
-
-            if startingPosReq == True:
-                startingPos = int(input('Input the starting position (Usually this is 0): '))
-                startingPosReq = False
-                currentPos = startingPos
-
-            while Distance != 0:
-                if Direction == "L":
-                    currentPos = moveForward(currentPos)
-                elif Direction == "R":
-                    currentPos = moveBackward(currentPos)
-                print("You turn the dial to " + str(currentPos))
-                Distance -= 1
-
-            Combination.append(currentPos)
-        
-        elif Direction == "E":
-            Open = True
-
-    print('Huzzar! The combination to the safe is ' + str(Combination))
+    print('Huzzar! The combination to the safe is ' + str(combination))
+    zeroCount = combination.count(0)
+    print("The number of times the integer \'0\' appears in the combination is " + str(zeroCount))
